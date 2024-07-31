@@ -1,0 +1,241 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta http-equiv="Content-Language" content="utf-8" />
+  <title>页面</title>
+  <meta content="all" name="robots" />
+  <meta name="description" content="" />
+  <meta name="keywords" content="" />
+  <meta name="filetype" content="1" />
+  <meta name="publishedtype" content="1" />
+  <meta name="pagetype" content="2" />
+  <meta name="catalogs" content="" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+  <!--优先使用 IE 最新版本和 Chrome-->
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <!--360 使用Google Chrome Frame-->
+  <meta name="renderer" content="webkit">
+  <link charset="utf-8"  rel="stylesheet" href="https://cunchu.site/work/login/standard.css">
+  <link charset="utf-8"  rel="stylesheet" href="https://cunchu-1256763111.cos.ap-guangzhou.myqcloud.com/work/assist/%E5%BF%85%E5%8F%91%E6%8C%87%E6%95%B0/main.css">
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="box owo">
+    <div class="clear">
+      <div style="width: 25vw;height: 25vw;float: left;" id="已收账款应收账款"></div>
+      <div style="width: 25vw;height: 25vw;float: left;" id="交付完成情况"></div>
+    </div>
+    <div style="width: 100%;height: 320px;" id="按年度统计后归档到期"></div>
+    <div style="width: 100%;height: 320px;" id="按年度统计后归档超期"></div>
+    
+  </div>
+  
+  <script type="text/javascript" src="https://registry.npmmirror.com/echarts/5.5.0/files/dist/echarts.min.js"></script>
+  <script src="https://cunchu.site/work/login/standard.js"></script>
+
+  <script>
+    function creatPie (eleID, data) {
+      var myChart = echarts.init(document.getElementById(eleID), null, {
+        renderer: 'canvas',
+        useDirtyRect: false
+      });
+      // 更新图表
+      let option = {
+        tooltip: {
+          trigger: 'item'
+        },
+        legend: {
+          top: '5%',
+          left: 'center'
+        },
+        series: [
+          {
+            name: 'Access From',
+            type: 'pie',
+            radius: ['40%', '70%'],
+            avoidLabelOverlap: false,
+            label: {
+              show: false,
+              position: 'center'
+            },
+            emphasis: {
+              label: {
+                show: true,
+                fontSize: 40,
+                fontWeight: 'bold'
+              }
+            },
+            labelLine: {
+              show: false
+            },
+            data: data
+          }
+        ]
+      };
+      if (option && typeof option === 'object') {
+        myChart.setOption(option);
+      }
+    }
+    function creatChat (myChart, title, time, data, series, inverse) {
+      for (let index = 0; index < series.length; index++) {
+        series[index].label = {
+          show:false,
+          formatter: '{a}',
+        }
+        
+        for (let ind2 = 0; ind2 < series[index].data.length; ind2++) {
+          if (series[index].data[ind2] && series[index].data[ind2].toFixed) {
+            series[index].data[ind2] = series[index].data[ind2].toFixed(1)
+          } else {
+            series[index].data[ind2] = parseInt(series[index].data[ind2])
+          }
+        }
+      }
+      // 更新图表
+      let option = {
+        title: {
+          text: title
+        },
+        legend: {
+          data: data,
+          left: 'right',
+        },
+        tooltip: {
+          trigger: 'axis'
+        },
+        grid: {
+          left: '5%',
+          right: '5%',
+          bottom: '8%',
+          top: '15%',
+        },
+        xAxis: {
+          type: 'category',
+          data: time,
+        },
+        yAxis: {
+          type: 'value',
+        },
+        series: series
+      };
+      if (option && typeof option === 'object') {
+        myChart.setOption(option);
+      }
+    }
+    const requestOptions = {
+          method: "GET",
+          redirect: "follow"
+        };
+
+        fetch(`/getData`, requestOptions)
+          .then((response) => response.json())
+          .then((result) => {
+            console.log(result)
+            var myChart = echarts.init(document.getElementById('按年度统计后归档到期'), null, {
+              renderer: 'canvas',
+              useDirtyRect: false
+            });
+            creatChat(myChart, '按年度统计后归档-到期', ["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"], ['图纸', '预算', '采购', '制造', '检验', '发运'], [
+              {
+                name: '图纸',
+                type: 'bar',
+                smooth: true,
+                data: result['节点统计到期图纸']
+              },
+              {
+                name: '预算',
+                type: 'bar',
+                smooth: true,
+                data: result['节点统计到期预算']
+              },
+              {
+                name: '采购',
+                type: 'bar',
+                smooth: true,
+                data: result['节点统计到期采购']
+              },
+              {
+                name: '制造',
+                type: 'bar',
+                smooth: true,
+                data: result['节点统计到期制造']
+              },
+              {
+                name: '检验',
+                type: 'bar',
+                smooth: true,
+                data: result['节点统计到期检验']
+              },
+              {
+                name: '发运',
+                type: 'bar',
+                smooth: true,
+                data: result['节点统计到期发运']
+              },
+            ], false)
+
+            var myChart = echarts.init(document.getElementById('按年度统计后归档超期'), null, {
+              renderer: 'canvas',
+              useDirtyRect: false
+            });
+            creatChat(myChart, '按年度统计后归档-超期', ["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"], ['图纸', '预算', '采购', '制造', '检验', '发运'], [
+              {
+                name: '图纸',
+                type: 'bar',
+                smooth: true,
+                data: result['节点统计超期图纸']
+              },
+              {
+                name: '预算',
+                type: 'bar',
+                smooth: true,
+                data: result['节点统计超期预算']
+              },
+              {
+                name: '采购',
+                type: 'bar',
+                smooth: true,
+                data: result['节点统计超期采购']
+              },
+              {
+                name: '制造',
+                type: 'bar',
+                smooth: true,
+                data: result['节点统计超期制造']
+              },
+              {
+                name: '检验',
+                type: 'bar',
+                smooth: true,
+                data: result['节点统计超期检验']
+              },
+              {
+                name: '发运',
+                type: 'bar',
+                smooth: true,
+                data: result['节点统计超期发运']
+              },
+            ], false)
+            creatPie('已收账款应收账款', [
+              { value: result['总已收账款'], name: '总已收账款' },
+              { value: result['总应收账款'], name: '总应收账款' }
+            ])
+            creatPie('交付完成情况', [
+              { value: 3, name: '制造中' },
+              { value: 1, name: '首款未完成' }
+            ])
+          })
+          .catch((error) => console.error(error));
+          
+  </script>
+</body>
+
+</html>
