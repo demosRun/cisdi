@@ -123,12 +123,19 @@ def getData():
         "节点统计超期发运": np.zeros(12, dtype=int).tolist(),
         "总已收账款": 0,
         "总应收账款": 0,
+        "待收款性质": [0,0,0,0,0,0,0],
+        "待收款金额": [0,0,0,0,0,0,0]
     }
     def getDateStr (var):
+        if (not var or var == '-'):
+            print('有不正确日期!')
+            return 0
         if (isinstance(var, datetime.datetime)):
-            return var.month
-        return datetime.datetime.strptime(var, "%Y/%m/%d").month
+            return var.month - 1
+        return datetime.datetime.strptime(var, "%Y/%m/%d").month - 1
     def checkDate(date1, date2):
+        if (date2 == '已完成' or date2 == '☑' or date1 == '-' or date2 == '-'):
+            return False
         if (not date1):
             return False
         if (not date2):
@@ -165,6 +172,28 @@ def getData():
                 outputData["总已收账款"] += int(row[45])
             if (row[39]):
                 outputData["总应收账款"] += int(row[39])
+            if (row[44]):
+                if (row[44] == '预付款'):
+                    outputData["待收款性质"][0] += 1
+                    outputData["待收款金额"][0] += int(row[39])
+                if (row[44] == '进度款'):
+                    outputData["待收款性质"][1] += 1
+                    outputData["待收款金额"][1] += int(row[39])
+                if (row[44] == '提货款'):
+                    outputData["待收款性质"][2] += 1
+                    outputData["待收款金额"][2] += int(row[39])
+                if (row[44] == '到货款'):
+                    outputData["待收款性质"][3] += 1
+                    outputData["待收款金额"][3] += int(row[39])
+                if (row[44] == '调试款'):
+                    outputData["待收款性质"][4] += 1
+                    outputData["待收款金额"][4] += int(row[39])
+                if (row[44] == '验收款'):
+                    outputData["待收款性质"][5] += 1
+                    outputData["待收款金额"][5] += int(row[39])
+                if (row[44] == '质保金'):
+                    outputData["待收款性质"][6] += 1
+                    outputData["待收款金额"][6] += int(row[39])
     print(outputData)
     return json.dumps(outputData)
 

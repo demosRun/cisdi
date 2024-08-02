@@ -30,11 +30,14 @@
 <body>
   <div class="box owo">
     <div class="clear">
-      <div style="width: 25vw;height: 25vw;float: left;" id="已收账款应收账款"></div>
-      <div style="width: 25vw;height: 25vw;float: left;" id="交付完成情况"></div>
+      <div style="width: 24vw;height: 24vw;float: left;" id="已收账款应收账款"></div>
+      <div style="width: 24vw;height: 24vw;float: left;" id="交付完成情况"></div>
+      <div style="width: 24vw;height: 24vw;float: left;" id="待收款性质"></div>
+      <div style="width: 24vw;height: 24vw;float: left;" id="待收款金额"></div>
     </div>
     <div style="width: 100%;height: 320px;" id="按年度统计后归档到期"></div>
     <div style="width: 100%;height: 320px;" id="按年度统计后归档超期"></div>
+    
     
   </div>
   
@@ -52,30 +55,19 @@
         tooltip: {
           trigger: 'item'
         },
+        label: {
+          formatter: '{b}: {c} ({d}%)'
+        },
         legend: {
           top: '5%',
           left: 'center'
         },
         series: [
           {
-            name: 'Access From',
+            name: '',
             type: 'pie',
-            radius: ['40%', '70%'],
+            radius: ['35%', '55%'],
             avoidLabelOverlap: false,
-            label: {
-              show: false,
-              position: 'center'
-            },
-            emphasis: {
-              label: {
-                show: true,
-                fontSize: 40,
-                fontWeight: 'bold'
-              }
-            },
-            labelLine: {
-              show: false
-            },
             data: data
           }
         ]
@@ -84,11 +76,15 @@
         myChart.setOption(option);
       }
     }
-    function creatChat (myChart, title, time, data, series, inverse) {
+    function creatChat (id, title, time, data, series, inverse) {
+      var myChart = echarts.init(document.getElementById(id), null, {
+        renderer: 'canvas',
+        useDirtyRect: false
+      });
       for (let index = 0; index < series.length; index++) {
         series[index].label = {
           show:false,
-          formatter: '{a}',
+          formatter: '{c}  {name|{a}}',
         }
         
         for (let ind2 = 0; ind2 < series[index].data.length; ind2++) {
@@ -112,8 +108,8 @@
           trigger: 'axis'
         },
         grid: {
-          left: '5%',
-          right: '5%',
+          left: '2%',
+          right: '0%',
           bottom: '8%',
           top: '15%',
         },
@@ -139,11 +135,8 @@
           .then((response) => response.json())
           .then((result) => {
             console.log(result)
-            var myChart = echarts.init(document.getElementById('按年度统计后归档到期'), null, {
-              renderer: 'canvas',
-              useDirtyRect: false
-            });
-            creatChat(myChart, '按年度统计后归档-到期', ["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"], ['图纸', '预算', '采购', '制造', '检验', '发运'], [
+
+            creatChat('按年度统计后归档到期', '按年度统计后归档-到期', ["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"], ['图纸', '预算', '采购', '制造', '检验', '发运'], [
               {
                 name: '图纸',
                 type: 'bar',
@@ -182,11 +175,8 @@
               },
             ], false)
 
-            var myChart = echarts.init(document.getElementById('按年度统计后归档超期'), null, {
-              renderer: 'canvas',
-              useDirtyRect: false
-            });
-            creatChat(myChart, '按年度统计后归档-超期', ["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"], ['图纸', '预算', '采购', '制造', '检验', '发运'], [
+
+            creatChat('按年度统计后归档超期', '按年度统计后归档-超期', ["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"], ['图纸', '预算', '采购', '制造', '检验', '发运'], [
               {
                 name: '图纸',
                 type: 'bar',
@@ -231,6 +221,24 @@
             creatPie('交付完成情况', [
               { value: 3, name: '制造中' },
               { value: 1, name: '首款未完成' }
+            ])
+            creatPie('待收款性质', [
+              { value: result['待收款性质'][0], name: '预付款' },
+              { value: result['待收款性质'][1], name: '进度款' },
+              { value: result['待收款性质'][2], name: '提货款' },
+              { value: result['待收款性质'][3], name: '到货款' },
+              { value: result['待收款性质'][4], name: '调试款' },
+              { value: result['待收款性质'][5], name: '验收款' },
+              { value: result['待收款性质'][6], name: '质保金' }
+            ])
+            creatPie('待收款金额', [
+              { value: result['待收款金额'][0], name: '预付款' },
+              { value: result['待收款金额'][1], name: '进度款' },
+              { value: result['待收款金额'][2], name: '提货款' },
+              { value: result['待收款金额'][3], name: '到货款' },
+              { value: result['待收款金额'][4], name: '调试款' },
+              { value: result['待收款金额'][5], name: '验收款' },
+              { value: result['待收款金额'][6], name: '质保金' }
             ])
           })
           .catch((error) => console.error(error));
