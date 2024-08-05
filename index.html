@@ -25,6 +25,11 @@
       width: 100%;
       height: 100%;
     }
+    iframe {
+      border: none;
+      width: 100%;
+      height: 350px;
+    }
   </style>
 </head>
 <body>
@@ -35,9 +40,9 @@
       <div style="width: 24vw;height: 24vw;float: left;" id="待收款性质"></div>
       <div style="width: 24vw;height: 24vw;float: left;" id="待收款金额"></div>
     </div>
-    <div style="width: 100%;height: 320px;" id="按年度统计后归档到期"></div>
-    <div style="width: 100%;height: 320px;" id="按年度统计后归档超期"></div>
-    
+    <div style="width: 100%;height: 180px;" id="按年度统计后归档到期"></div>
+    <div style="width: 100%;height: 180px;" id="按年度统计后归档超期"></div>
+    <iframe src="./table"></iframe>
     
   </div>
   
@@ -66,7 +71,7 @@
           {
             name: '',
             type: 'pie',
-            radius: ['35%', '55%'],
+            radius: ['0%', '45%'],
             avoidLabelOverlap: false,
             data: data
           }
@@ -219,8 +224,13 @@
               { value: result['总应收账款'], name: '总应收账款' }
             ])
             creatPie('交付完成情况', [
-              { value: 3, name: '制造中' },
-              { value: 1, name: '首款未完成' }
+              { value: result['完成情况']['进行中'], name: '进行中' },
+              { value: result['完成情况']['发运完成'], name: '发运完成' },
+              { value: result['完成情况']['图纸下达'], name: '图纸下达' },
+              { value: result['完成情况']['预算下达'], name: '预算下达' },
+              { value: result['完成情况']['成品检验完成'], name: '成品检验完成' },
+              { value: result['完成情况']['制造完成'], name: '制造完成' },
+              { value: result['完成情况']['采购合同完成'], name: '采购合同完成' },
             ])
             creatPie('待收款性质', [
               { value: result['待收款性质'][0], name: '预付款' },

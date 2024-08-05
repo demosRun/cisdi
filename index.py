@@ -13,6 +13,10 @@ app = Flask(__name__)
 def home():
     return send_file(os.getcwd() + '/index.html')
 
+@app.route('/table')
+def table():
+    return send_file(os.getcwd() + '/table.html')
+
 token = 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJ7XCJ1c2VySWRcIjpcIjAxNDYzMkBjaXNkaS5jb20uY25cIn0iLCJzdWIiOiLnmbvlvZV0b2tlbiIsImlzcyI6IumXqOaItyIsImlhdCI6MTcyMTM1NDgxMywiZXhwIjoxNzIxMzgzOTEzfQ.ebY4gZY72s-gtPZabJL-yGIfJoQGUxexw-2wQ5iWxH8'
 cookie = 'OAMAuthnCookie_ccis-oamgate.cisdi.com.cn:7777=1c82d8a5105dd3c467f0b2819fccf967012911b0%7EVcFBPnASueboBby1RBx5wrxChUkyEEEpyi1RQPefur6GonW1lwF7EEBjk%2FA8eApb8K1sfPwVow%2FIyHxApxPLkGRhONLoncJ6EXQHdpomeMrTkT%2Bjz4e%2BRJ9veOhetJ4q5U35wwI6vYsZP3J5XUAqKT5pxRpxwQ6YOeaC%2FrxcpnS28qSk8b0fA5aE%2BgyWTDXAF1Hz1pGN5sIP1hpAd%2F4WCyhNJn%2Bx%2BzxH%2BHBeUPQ3Aeo%2FZ%2F8CXd8gx12g34A8lNuL8N4JcQvGAkH%2BV%2BU4Q5Z6T%2Fxry6O4m%2BdvGKkvuk9K3OLVaEjyXh7GuQwufoVov%2BN%2BRCTa62QvmG3J8GkzQcVSbdJ3GdG6rgMm3PGKjNvGWYU0v5q4Yf1gscDAFV4OlsqgzMuVxRzFXsi0rAqZ3SPwh0FR3xdcPhGXnhynEsy82%2FeWNrr8OzqABfCVaRtR%2B6z57i%2FlMQj5Ng0eXzz7LSz4qRV0Uim8mZuYqm8pqYCxIRZDU%2F15Q1HSOtG1QHtn4ybtb7u16MC3WMxvn6q5EZ5%2B75WhQM4IQFlFLGFT0ivHNGF2MNEkulzDs7grKLXk673WzlidebA3aECt2MSdZCkoP3YuVNRTL6cyywZX1pP2v0E6cUrJ%2FKjnvdcntdSBWsDZ9g54ERmRfAMiXX96gtXcDfTGhzzg5HGv%2BaFx9Sj5QkHSWSYsDeHShy8TkmcTeGYBeAbeysk3uGZNkJWjGpyTthCMsyETXRk7tdDacDeADDUNrFAK5EOMYK7BjUXu9du%2FURdlSwOecb0AzYyKAGgccA%3D%3D; token=eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJ7XCJ1c2VySWRcIjpcIjAxNDYzMkBjaXNkaS5jb20uY25cIn0iLCJzdWIiOiLnmbvlvZV0b2tlbiIsImlzcyI6IumXqOaItyIsImlhdCI6MTcyMTM1NDgxMywiZXhwIjoxNzIxMzgzOTEzfQ.ebY4gZY72s-gtPZabJL-yGIfJoQGUxexw-2wQ5iWxH8; ccis_sso_token=eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJ7XCJ1c2VySWRcIjpcIjAxNDYzMkBjaXNkaS5jb20uY25cIn0iLCJzdWIiOiJjY2lz6aqM6K-BdG9rZW4iLCJpc3MiOiLpl6jmiLciLCJpYXQiOjE3MjEzNTQ4MTMsImV4cCI6MTcyMTM4MzkxM30.0hiJMbd32AG1aWvkG2FzEAzMigymBnRKzO_kwjqp_eg; oid=82BD2971CBFC45B3BF10B6E2819EF85F; formatedUserName=014632@cisdi.com.cn; last_login_user=014632; sto-id-24862=GAGEFIAKGBBO; workCode=014632; userId=014632@cisdi.com.cn; portal_session=NjY2; PRD=tnM0nABM9OHtNL0oxeXWPIet:S'
 
@@ -109,30 +113,43 @@ def getData():
     # 选择活动工作表
     sheet = workbook.active
     outputData = {
-        "节点统计到期图纸": np.zeros(12, dtype=int).tolist(),
-        "节点统计到期预算": np.zeros(12, dtype=int).tolist(),
-        "节点统计到期采购": np.zeros(12, dtype=int).tolist(),
-        "节点统计到期制造": np.zeros(12, dtype=int).tolist(),
-        "节点统计到期检验": np.zeros(12, dtype=int).tolist(),
-        "节点统计到期发运": np.zeros(12, dtype=int).tolist(),
-        "节点统计超期图纸": np.zeros(12, dtype=int).tolist(),
-        "节点统计超期预算": np.zeros(12, dtype=int).tolist(),
-        "节点统计超期采购": np.zeros(12, dtype=int).tolist(),
-        "节点统计超期制造": np.zeros(12, dtype=int).tolist(),
-        "节点统计超期检验": np.zeros(12, dtype=int).tolist(),
-        "节点统计超期发运": np.zeros(12, dtype=int).tolist(),
+        "节点统计到期图纸": np.zeros(13, dtype=int).tolist(),
+        "节点统计到期预算": np.zeros(13, dtype=int).tolist(),
+        "节点统计到期采购": np.zeros(13, dtype=int).tolist(),
+        "节点统计到期制造": np.zeros(13, dtype=int).tolist(),
+        "节点统计到期检验": np.zeros(13, dtype=int).tolist(),
+        "节点统计到期发运": np.zeros(13, dtype=int).tolist(),
+        "节点统计超期图纸": np.zeros(13, dtype=int).tolist(),
+        "节点统计超期预算": np.zeros(13, dtype=int).tolist(),
+        "节点统计超期采购": np.zeros(13, dtype=int).tolist(),
+        "节点统计超期制造": np.zeros(13, dtype=int).tolist(),
+        "节点统计超期检验": np.zeros(13, dtype=int).tolist(),
+        "节点统计超期发运": np.zeros(13, dtype=int).tolist(),
         "总已收账款": 0,
         "总应收账款": 0,
         "待收款性质": [0,0,0,0,0,0,0],
-        "待收款金额": [0,0,0,0,0,0,0]
+        "待收款金额": [0,0,0,0,0,0,0],
+        "完成情况": {
+            "进行中": 0,
+            "发运完成": 0,
+            "图纸下达": 0,
+            "预算下达": 0,
+            "成品检验完成": 0,
+            "制造完成": 0,
+            "采购合同完成": 0,
+        }
     }
     def getDateStr (var):
         if (not var or var == '-'):
-            print('有不正确日期!')
-            return 0
-        if (isinstance(var, datetime.datetime)):
+            # print('有不正确日期!')
+            return 12
+        if (not isinstance(var, datetime.datetime)):
+            var = datetime.datetime.strptime(var, "%Y/%m/%d")
+            
+        if (var.year == 2024):
             return var.month - 1
-        return datetime.datetime.strptime(var, "%Y/%m/%d").month - 1
+        else:
+            return 12
     def checkDate(date1, date2):
         if (date2 == '已完成' or date2 == '☑' or date1 == '-' or date2 == '-'):
             return False
@@ -194,6 +211,10 @@ def getData():
                 if (row[44] == '质保金'):
                     outputData["待收款性质"][6] += 1
                     outputData["待收款金额"][6] += int(row[39])
+            if (row[15]):
+                outputData["完成情况"][row[15]] += 1
+            else:
+                outputData["完成情况"]["进行中"] += 1
     print(outputData)
     return json.dumps(outputData)
 
