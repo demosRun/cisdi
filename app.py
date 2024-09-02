@@ -137,7 +137,8 @@ def getData():
             "成品检验完成": 0,
             "制造完成": 0,
             "采购合同完成": 0,
-        }
+        },
+        "项目状态": np.zeros(8, dtype=int).tolist()
     }
     def getDateStr (var):
         if (not var or var == '-'):
@@ -212,9 +213,21 @@ def getData():
                     outputData["待收款性质"][6] += 1
                     outputData["待收款金额"][6] += int(row[39])
             if (row[15]):
+                outputData['项目状态'][0] += 1
                 outputData["完成情况"][row[15]] += 1
             else:
+                outputData['项目状态'][1] += 1
                 outputData["完成情况"]["进行中"] += 1
+            # 是否超期
+            if (row[38]):
+                outputData['项目状态'][2] += 1
+            else:
+                outputData['项目状态'][3] += 1
+            # 罚款关注
+            if (row[39]):
+                outputData['项目状态'][4] += 1
+            if (row[34]):
+                outputData['项目状态'][5] += 1
     print(outputData)
     return json.dumps(outputData)
 

@@ -34,11 +34,40 @@
 </head>
 <body>
   <div class="box owo">
+    <div class="table-show clear" style="height: 24vw;position: relative;">
+      <div class="text-1" style="color: #009fe9; font-weight: bold; font-size: 20px; position: absolute; top: 3vw; left: 1vw;">C类项目进度表</div>
+      <div class="text-2" style="position: absolute;color: #009fe9;font-weight: bold;font-size: 20px;left: 18vw;top: 1vw;">执行项目<br><span id="zxxm" style="background-color: green; color: white; display: inline-block; width: 78px; text-align: center; font-size: 20px; line-height: 30px; margin-top: 5px;">66</span></div>
+      <div class="text-2" style="position: absolute;color: #009fe9;font-weight: bold;font-size: 20px;left: 25vw;top: 1vw;" id="wjfxm">未交付项目<br><span style="background-color: yellow; color: red; display: inline-block; width: 78px; text-align: center; font-size: 20px; line-height: 30px; margin-top: 5px;">66</span></div>
+      <table class="table-fill" style="position: absolute;width: 10vw;left: 22vw;top: 9vw;">
+        <tbody class="table-hover">
+        <tr>
+        <td class="text-left">罚款关注</td>
+        <td class="text-left">1</td>
+        </tr>
+        <tr>
+        <td class="text-left">3级预警</td>
+        <td class="text-left">0</td>
+        </tr>
+        <tr>
+        <td class="text-left">2级预警</td>
+        <td class="text-left">0</td>
+        </tr>
+        <tr>
+        <td class="text-left">1级预警</td>
+        <td class="text-left">0</td>
+        </tr>
+        </tbody>
+      </table>
+      <div style="width: 20vw;height: 24vw;float: left;position: absolute;left: 0vw;" id="C类项目进度表"></div>
+      <div style="width: 20vw;height: 24vw;float: left;position: absolute;left: 32vw;" id="交付完成情况"></div>
+      <div style="width: 20vw;height: 24vw;position: absolute;left: 50vw;" id="已收账款应收账款"></div>
+      <div style="width: 30vw;height: 18vw;position: absolute;right: 0;" id="待收款金额"></div>
+    </div>
     <div class="clear">
-      <div style="width: 24vw;height: 24vw;float: left;" id="已收账款应收账款"></div>
-      <div style="width: 24vw;height: 24vw;float: left;" id="交付完成情况"></div>
+      
+      
       <div style="width: 24vw;height: 24vw;float: left;" id="待收款性质"></div>
-      <div style="width: 24vw;height: 24vw;float: left;" id="待收款金额"></div>
+      <div style="width: 24vw;height: 24vw;float: left;" id="项目进度"></div>
     </div>
     <div style="width: 100%;height: 180px;" id="按年度统计后归档到期"></div>
     <div style="width: 100%;height: 180px;" id="按年度统计后归档超期"></div>
@@ -113,7 +142,7 @@
           trigger: 'axis'
         },
         grid: {
-          left: '2%',
+          left: '40px',
           right: '0%',
           bottom: '8%',
           top: '15%',
@@ -232,23 +261,32 @@
               { value: result['完成情况']['制造完成'], name: '制造完成' },
               { value: result['完成情况']['采购合同完成'], name: '采购合同完成' },
             ])
-            creatPie('待收款性质', [
-              { value: result['待收款性质'][0], name: '预付款' },
-              { value: result['待收款性质'][1], name: '进度款' },
-              { value: result['待收款性质'][2], name: '提货款' },
-              { value: result['待收款性质'][3], name: '到货款' },
-              { value: result['待收款性质'][4], name: '调试款' },
-              { value: result['待收款性质'][5], name: '验收款' },
-              { value: result['待收款性质'][6], name: '质保金' }
+            creatChat('待收款金额', '待收款金额', ["预付款", "进度款", "提货款", "到货款", "调试款", "验收款", "质保金"], [], [
+              {
+                name: '项目数',
+                type: 'bar',
+                smooth: true,
+                data: result['待收款性质']
+              },
+              {
+                name: '待收款金额',
+                type: 'bar',
+                smooth: true,
+                data: result['待收款金额']
+              }
             ])
-            creatPie('待收款金额', [
-              { value: result['待收款金额'][0], name: '预付款' },
-              { value: result['待收款金额'][1], name: '进度款' },
-              { value: result['待收款金额'][2], name: '提货款' },
-              { value: result['待收款金额'][3], name: '到货款' },
-              { value: result['待收款金额'][4], name: '调试款' },
-              { value: result['待收款金额'][5], name: '验收款' },
-              { value: result['待收款金额'][6], name: '质保金' }
+            creatChat('项目进度', '项目状态', ["已交付", "未交付", "超期", "未超期", "罚款关注", "预警"], [], [
+              {
+                name: '图纸',
+                type: 'bar',
+                smooth: true,
+                data: result['项目状态']
+              }
+            ], false)
+
+            creatPie('C类项目进度表', [
+              { value: result['项目状态'][0], name: '已交付' },
+              { value: result['项目状态'][1], name: '未交付' }
             ])
           })
           .catch((error) => console.error(error));
