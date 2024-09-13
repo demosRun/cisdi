@@ -30,6 +30,13 @@
       width: 100%;
       height: 350px;
     }
+    .table-box {
+      width: 100%;
+      overflow: auto;
+    }
+    .table-box table {
+      width: 5000px;
+    }
   </style>
 </head>
 <body>
@@ -71,7 +78,7 @@
     </div>
     <div style="width: 100%;height: 180px;" id="按年度统计后归档到期"></div>
     <div style="width: 100%;height: 180px;" id="按年度统计后归档超期"></div>
-    
+    <div class="table-box"></div>
   </div>
   
   <script type="text/javascript" src="https://registry.npmmirror.com/echarts/5.5.0/files/dist/echarts.min.js"></script>
@@ -160,136 +167,147 @@
       }
     }
     const requestOptions = {
-          method: "GET",
-          redirect: "follow"
-        };
+      method: "GET",
+      redirect: "follow"
+    };
 
-        fetch(`/getData`, requestOptions)
-          .then((response) => response.json())
-          .then((result) => {
-            console.log(result)
+    fetch(`/getData`, requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        console.log(result)
 
-            creatChat('按年度统计后归档到期', '按年度统计后归档-到期', ["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"], ['图纸', '预算', '采购', '制造', '检验', '发运'], [
-              {
-                name: '图纸',
-                type: 'bar',
-                smooth: true,
-                data: result['节点统计到期图纸']
-              },
-              {
-                name: '预算',
-                type: 'bar',
-                smooth: true,
-                data: result['节点统计到期预算']
-              },
-              {
-                name: '采购',
-                type: 'bar',
-                smooth: true,
-                data: result['节点统计到期采购']
-              },
-              {
-                name: '制造',
-                type: 'bar',
-                smooth: true,
-                data: result['节点统计到期制造']
-              },
-              {
-                name: '检验',
-                type: 'bar',
-                smooth: true,
-                data: result['节点统计到期检验']
-              },
-              {
-                name: '发运',
-                type: 'bar',
-                smooth: true,
-                data: result['节点统计到期发运']
-              },
-            ], false)
+        creatChat('按年度统计后归档到期', '按年度统计后归档-到期', ["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"], ['图纸', '预算', '采购', '制造', '检验', '发运'], [
+          {
+            name: '图纸',
+            type: 'bar',
+            smooth: true,
+            data: result['节点统计到期图纸']
+          },
+          {
+            name: '预算',
+            type: 'bar',
+            smooth: true,
+            data: result['节点统计到期预算']
+          },
+          {
+            name: '采购',
+            type: 'bar',
+            smooth: true,
+            data: result['节点统计到期采购']
+          },
+          {
+            name: '制造',
+            type: 'bar',
+            smooth: true,
+            data: result['节点统计到期制造']
+          },
+          {
+            name: '检验',
+            type: 'bar',
+            smooth: true,
+            data: result['节点统计到期检验']
+          },
+          {
+            name: '发运',
+            type: 'bar',
+            smooth: true,
+            data: result['节点统计到期发运']
+          },
+        ], false)
 
 
-            creatChat('按年度统计后归档超期', '按年度统计后归档-超期', ["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"], ['图纸', '预算', '采购', '制造', '检验', '发运'], [
-              {
-                name: '图纸',
-                type: 'bar',
-                smooth: true,
-                data: result['节点统计超期图纸']
-              },
-              {
-                name: '预算',
-                type: 'bar',
-                smooth: true,
-                data: result['节点统计超期预算']
-              },
-              {
-                name: '采购',
-                type: 'bar',
-                smooth: true,
-                data: result['节点统计超期采购']
-              },
-              {
-                name: '制造',
-                type: 'bar',
-                smooth: true,
-                data: result['节点统计超期制造']
-              },
-              {
-                name: '检验',
-                type: 'bar',
-                smooth: true,
-                data: result['节点统计超期检验']
-              },
-              {
-                name: '发运',
-                type: 'bar',
-                smooth: true,
-                data: result['节点统计超期发运']
-              },
-            ], false)
-            creatPie('已收账款应收账款', [
-              { value: result['总已收账款'], name: '总已收账款' },
-              { value: result['总应收账款'], name: '总应收账款' }
-            ])
-            creatPie('交付完成情况', [
-              { value: result['完成情况']['进行中'], name: '进行中' },
-              { value: result['完成情况']['发运完成'], name: '发运完成' },
-              { value: result['完成情况']['图纸下达'], name: '图纸下达' },
-              { value: result['完成情况']['预算下达'], name: '预算下达' },
-              { value: result['完成情况']['成品检验完成'], name: '成品检验完成' },
-              { value: result['完成情况']['制造完成'], name: '制造完成' },
-              { value: result['完成情况']['采购合同完成'], name: '采购合同完成' },
-            ])
-            creatChat('待收款金额', '待收款金额', ["预付款", "进度款", "提货款", "到货款", "调试款", "验收款", "质保金"], [], [
-              {
-                name: '项目数',
-                type: 'bar',
-                smooth: true,
-                data: result['待收款性质']
-              },
-              {
-                name: '待收款金额',
-                type: 'bar',
-                smooth: true,
-                data: result['待收款金额']
-              }
-            ])
-            creatChat('项目进度', '项目状态', ["已交付", "未交付", "超期", "未超期", "罚款关注", "预警"], [], [
-              {
-                name: '图纸',
-                type: 'bar',
-                smooth: true,
-                data: result['项目状态']
-              }
-            ], false)
+        creatChat('按年度统计后归档超期', '按年度统计后归档-超期', ["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"], ['图纸', '预算', '采购', '制造', '检验', '发运'], [
+          {
+            name: '图纸',
+            type: 'bar',
+            smooth: true,
+            data: result['节点统计超期图纸']
+          },
+          {
+            name: '预算',
+            type: 'bar',
+            smooth: true,
+            data: result['节点统计超期预算']
+          },
+          {
+            name: '采购',
+            type: 'bar',
+            smooth: true,
+            data: result['节点统计超期采购']
+          },
+          {
+            name: '制造',
+            type: 'bar',
+            smooth: true,
+            data: result['节点统计超期制造']
+          },
+          {
+            name: '检验',
+            type: 'bar',
+            smooth: true,
+            data: result['节点统计超期检验']
+          },
+          {
+            name: '发运',
+            type: 'bar',
+            smooth: true,
+            data: result['节点统计超期发运']
+          },
+        ], false)
+        creatPie('已收账款应收账款', [
+          { value: result['总已收账款'], name: '总已收账款' },
+          { value: result['总应收账款'], name: '总应收账款' }
+        ])
+        creatPie('交付完成情况', [
+          { value: result['完成情况']['进行中'], name: '进行中' },
+          { value: result['完成情况']['发运完成'], name: '发运完成' },
+          { value: result['完成情况']['图纸下达'], name: '图纸下达' },
+          { value: result['完成情况']['预算下达'], name: '预算下达' },
+          { value: result['完成情况']['成品检验完成'], name: '成品检验完成' },
+          { value: result['完成情况']['制造完成'], name: '制造完成' },
+          { value: result['完成情况']['采购合同完成'], name: '采购合同完成' },
+        ])
+        creatChat('待收款金额', '待收款金额', ["预付款", "进度款", "提货款", "到货款", "调试款", "验收款", "质保金"], [], [
+          {
+            name: '项目数',
+            type: 'bar',
+            smooth: true,
+            data: result['待收款性质']
+          },
+          {
+            name: '待收款金额',
+            type: 'bar',
+            smooth: true,
+            data: result['待收款金额']
+          }
+        ])
+        creatChat('项目进度', '项目状态', ["已交付", "未交付", "超期", "未超期", "罚款关注", "预警"], [], [
+          {
+            name: '图纸',
+            type: 'bar',
+            smooth: true,
+            data: result['项目状态']
+          }
+        ], false)
 
-            creatPie('C类项目进度表', [
-              { value: result['项目状态'][0], name: '已交付' },
-              { value: result['项目状态'][1], name: '未交付' }
-            ])
-          })
-          .catch((error) => console.error(error));
-          
+        creatPie('C类项目进度表', [
+          { value: result['项目状态'][0], name: '已交付' },
+          { value: result['项目状态'][1], name: '未交付' }
+        ])
+      })
+      .catch((error) => console.error(error));
+    const requestOptions2 = {
+      method: "GET",
+      redirect: "follow"
+    };
+
+    fetch("/getTable", requestOptions2)
+      .then((response) => response.text())
+      .then((result) => {
+        console.log(result)
+        document.querySelector('.table-box').innerHTML  = result
+      })
+      .catch((error) => console.error(error));      
   </script>
 </body>
 

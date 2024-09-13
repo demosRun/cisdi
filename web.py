@@ -4,6 +4,7 @@ import json
 import datetime
 import requests
 import numpy as np
+import pandas as pd
 from openpyxl import load_workbook
 from flask import Flask, send_file, request
 
@@ -30,8 +31,15 @@ def download_file(url, local_filename):
     return local_filename
 
 
+@app.route('/getTable', methods=['GET'])
+def getTable():
+    # 读取 .xlsx 文件
+    df = pd.read_excel('./file.xlsx')
 
-
+    # 将 DataFrame 转换为 HTML
+    html_data = df.to_html()
+    html_data = html_data.replace('NaN', '')
+    return html_data
 
 @app.route('/getData', methods=['GET'])
 def getData():
