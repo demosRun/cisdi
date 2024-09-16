@@ -102,25 +102,25 @@ def getData():
     for row in sheet.iter_rows(min_row=2, values_only=True):
         if (row[0] != None):
             # 项目数量
-            outputData["节点统计到期图纸"][getDateStr(row[16])] += 1
-            outputData["节点统计到期预算"][getDateStr(row[19])] += 1
-            outputData["节点统计到期采购"][getDateStr(row[22])] += 1
-            outputData["节点统计到期制造"][getDateStr(row[25])] += 1
-            outputData["节点统计到期检验"][getDateStr(row[28])] += 1
-            outputData["节点统计到期发运"][getDateStr(row[31])] += 1
+            outputData["节点统计到期图纸"][getDateStr(row[15])] += 1
+            outputData["节点统计到期预算"][getDateStr(row[18])] += 1
+            outputData["节点统计到期采购"][getDateStr(row[21])] += 1
+            outputData["节点统计到期制造"][getDateStr(row[24])] += 1
+            outputData["节点统计到期检验"][getDateStr(row[27])] += 1
+            outputData["节点统计到期发运"][getDateStr(row[30])] += 1
             # 延期数量
-            if (checkDate(row[16], row[17])):
-                outputData["节点统计超期图纸"][getDateStr(row[16])] += 1
-            if (checkDate(row[19], row[20])):
-                outputData["节点统计超期预算"][getDateStr(row[19])] += 1
-            if (checkDate(row[22], row[23])):
-                outputData["节点统计超期采购"][getDateStr(row[22])] += 1
-            if (checkDate(row[25], row[26])):
-                outputData["节点统计超期制造"][getDateStr(row[25])] += 1
-            if (checkDate(row[28], row[29])):
-                outputData["节点统计超期检验"][getDateStr(row[28])] += 1
-            if (checkDate(row[31], row[32])):
-                outputData["节点统计超期发运"][getDateStr(row[31])] += 1
+            if (checkDate(row[15], row[16])):
+                outputData["节点统计超期图纸"][getDateStr(row[15])] += 1
+            if (checkDate(row[18], row[19])):
+                outputData["节点统计超期预算"][getDateStr(row[18])] += 1
+            if (checkDate(row[21], row[22])):
+                outputData["节点统计超期采购"][getDateStr(row[21])] += 1
+            if (checkDate(row[24], row[25])):
+                outputData["节点统计超期制造"][getDateStr(row[24])] += 1
+            if (checkDate(row[27], row[28])):
+                outputData["节点统计超期检验"][getDateStr(row[27])] += 1
+            if (checkDate(row[30], row[31])):
+                outputData["节点统计超期发运"][getDateStr(row[30])] += 1
             # 收款详情
             if (row[45]):
                 outputData["总已收账款"] += int(row[45])
@@ -148,9 +148,9 @@ def getData():
                 if (row[44] == '质保金'):
                     outputData["待收款性质"][6] += 1
                     outputData["待收款金额"][6] += int(row[39])
-            if (row[15]):
+            if (row[14]):
                 outputData['项目状态'][0] += 1
-                outputData["完成情况"][row[15]] += 1
+                outputData["完成情况"][row[14]] += 1
             else:
                 outputData['项目状态'][1] += 1
                 outputData["完成情况"]["进行中"] += 1
@@ -162,10 +162,10 @@ def getData():
             # 罚款关注
             if (row[39]):
                 outputData['项目状态'][4] += 1
-            if (row[34]):
+            if (row[33]):
                 outputData['项目状态'][5] += 1
     print(outputData)
     return json.dumps(outputData)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False, port=5001, host="0.0.0.0")

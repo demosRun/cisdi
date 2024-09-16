@@ -79,11 +79,22 @@ def loadExcel(file):
         if (isinstance(time, datetime.datetime)):
             return time.strftime('%Y/%m/%d')
         return time
+    产品名称 = ''
+    总数量 = 0
+    lastRow = []
     for row in sheet.iter_rows(min_row=5, values_only=True):
         if (row[0]):
-            lestTemp = [项目名称, row[2], 项目号, "", re.findall(r'\d+', 项目名称)[0], 业主名称, row[7],row[8], None, None, None, row[12], None,None,None,row[15],None,None,row[16],None,None, row[17],None,None,row[18],None,None,row[19],None,None, row[20]]
-            lestTemp = list(map(remove_zero_time, lestTemp))
-            data.append(lestTemp)
+            lastRow = row
+            if (产品名称 != ''):
+                产品名称 += '/'
+            产品名称 += row[7]
+            if isinstance(row[8], str) and row[8].isdigit():
+                总数量 += int(row[8])
+            if isinstance(row[8], int):
+                总数量 += int(row[8])
+    lestTemp = [项目名称, row[2], 项目号, "", re.findall(r'\d+', 项目名称)[0], 业主名称, 产品名称, 总数量, None, None, None, lastRow[12], None,None,None,lastRow[15],None,None,lastRow[16],None,None, lastRow[17],None,None,lastRow[18],None,None,lastRow[19],None,None, lastRow[20]]
+    lestTemp = list(map(remove_zero_time, lestTemp))
+    data.append(lestTemp)
     
     # print(data)
     return data
