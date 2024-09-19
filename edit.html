@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta http-equiv="Content-Language" content="utf-8" />
+  <title>页面</title>
+  <meta content="all" name="robots" />
+  <meta name="description" content="" />
+  <meta name="keywords" content="" />
+  <meta name="filetype" content="1" />
+  <meta name="publishedtype" content="1" />
+  <meta name="pagetype" content="2" />
+  <meta name="catalogs" content="" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+  <!--优先使用 IE 最新版本和 Chrome-->
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <!--360 使用Google Chrome Frame-->
+  <meta name="renderer" content="webkit">
+  <link charset="utf-8"  rel="stylesheet" href="https://cunchu.site/work/login/standard.css">
+  <style>
+    .box, #tableContainer {
+        width: 100%;
+        overflow: auto;
+    }
+    #tableContainer table {
+        width: 5600px;
+    }
+  </style>
+</head>
+<body>
+  <div class="box owo">
+    <div id="tableContainer"></div>
+    <div class="owo button" onclick="save()">保存</div>
+  </div>
+  <script>
+    // 函数：将二维数组转换为HTML表格
+    function generateTable(data) {
+        let table = '<table>';
+
+        // 遍历数组的每一行
+        data.forEach((row, rowIndex) => {
+            table += '<tr>';  // 开始表格行
+            // 遍历每一行的每个单元格
+            row.forEach(cell => {
+                if (cell == null) cell = ''
+                if (rowIndex === 0) {
+                    table += `<th contenteditable="true">${cell}</th>`;  // 第一行作为表头
+                } else {
+                    table += `<td contenteditable="true">${cell}</td>`;  // 其他行作为普通单元格
+                }
+            });
+            table += '</tr>';  // 结束表格行
+        });
+
+        table += '</table>';
+        return table;
+    }
+    function tableToArray() {
+        // 获取表格元素
+        const table = document.querySelector('#tableContainer table');
+        const rows = table.rows;
+        const dataArray = [];
+
+        // 遍历表格的行
+        for (let i = 0; i < rows.length; i++) {
+            const row = rows[i];
+            const rowData = [];
+
+            // 遍历每行的单元格
+            for (let j = 0; j < row.cells.length; j++) {
+                rowData.push(row.cells[j].innerText); // 将单元格内容存入数组
+            }
+
+            dataArray.push(rowData); // 将每行数据存入主数组
+        }
+
+        // 打印转换后的数组
+        console.log(dataArray);
+        return dataArray
+    }
+    const requestOptions = {
+        method: "GET",
+        redirect: "follow"
+    };
+
+    fetch("/getTableData", requestOptions)
+    .then((response) => response.json())
+    .then((result) => {
+        console.log(result)
+        document.getElementById('tableContainer').innerHTML = generateTable(result);
+    })
+    .catch((error) => console.error(error));
+    function save () {
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        const raw = JSON.stringify(tableToArray());
+
+        const requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow"
+        };
+
+        fetch("/saveTable", requestOptions)
+        .then((response) => response.text())
+        .then((result) => console.log(result))
+        .catch((error) => console.error(error));
+    }
+  </script>
+  <script src="https://cunchu.site/work/login/standard.js"></script>
+</body>
+
+</html>

@@ -14,10 +14,30 @@ app = Flask(__name__)
 def home():
     return send_file(os.getcwd() + '/index.html')
 
-@app.route('/table')
-def table():
-    return send_file(os.getcwd() + '/table.html')
+@app.route('/edit')
+def edit():
+    return send_file(os.getcwd() + '/edit.html')
 
+@app.route('/getTableData')
+def getTableData():
+    outPutData = []
+    workbook = load_workbook('file.xlsx')
+    sheet = workbook.active
+    for row in sheet.iter_rows(values_only=True):
+        outPutData.append(list(row))
+    return json.dumps(outPutData)
+
+@app.route('/saveTable', methods=['POST'])
+def saveTable():
+    # 获取 JSON 数据
+    data = request.json
+    print(data)
+    # 将数组转换为 DataFrame
+    df = pd.DataFrame(data[1:], columns=data[0])
+
+    # 保存为 Excel 文件
+    df.to_excel('file.xlsx', index=False)  # index=False 不保存行号
+    return json.dumps({"message": "ok"})
 
 
 def download_file(url, local_filename):
@@ -168,4 +188,4 @@ def getData():
     return json.dumps(outputData)
 
 if __name__ == '__main__':
-    app.run(debug=False, port=5001, host="0.0.0.0")
+    app.run(debug=True, port=5001, host="0.0.0.0")
