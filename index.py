@@ -39,6 +39,7 @@ for row in sheet.iter_rows(values_only=True):
     outPutData.append(list(row))
 
 def loadExcel(file):
+    print('加载文件: ' + file)
     # 加载 Excel 文件
     workbook = load_workbook(file)
     sheet = workbook.active
@@ -67,7 +68,7 @@ def loadExcel(file):
                 总数量 += int(row[8])
             if isinstance(row[8], int):
                 总数量 += int(row[8])
-    lestTemp = [项目名称, row[2], 项目号, "", re.findall(r'\d+', 项目名称)[0], 业主名称, 产品名称, 总数量, None, None, None, lastRow[12], None,None,None,lastRow[15],None,None,lastRow[16],None,None, lastRow[17],None,None,lastRow[18],None,None,lastRow[19],None,None, lastRow[20]]
+    lestTemp = [项目名称, re.findall(r'\d+', 项目名称)[-1], 项目号, "", re.findall(r'\d+', 项目名称)[0], 业主名称, 产品名称, 总数量, None, None, None, lastRow[12], None,None,None,lastRow[15],None,None,lastRow[16],None,None, lastRow[17],None,None,lastRow[18],None,None,lastRow[19],None,None, lastRow[20]]
     lestTemp = list(map(remove_zero_time, lestTemp))
     data.append(lestTemp)
     return data
