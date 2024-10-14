@@ -92,19 +92,23 @@ def outPutFile(requestid):
     
     # 指定要创建的文件名
     file_name = dataTemp['resultData'][0]['filename']
-    
-    # 将解码后的数据写入文件
-    if (not os.path.exists('./files/' + file_name)):
-        # 解码Base64字符串
-        decoded_data = base64.b64decode(base64_string)
-        with open('./files/' + file_name, 'wb') as file:
-            file.write(decoded_data)
-            time.sleep(1)
-            outPutData.extend(loadExcel('./files/' + file_name))
+    if ('项目立项审批流程' in file_name):
+        # 将解码后的数据写入文件
+        if (not os.path.exists('./files/' + file_name)):
+            # 解码Base64字符串
+            decoded_data = base64.b64decode(base64_string)
+            with open('./files/' + file_name, 'wb') as file:
+                file.write(decoded_data)
+                time.sleep(1)
+                outPutData.extend(loadExcel('./files/' + file_name))
 
 # 网络请求
 fileList = getFileList()
-
+print(fileList['data'])
+fileList = fileList['data']['rowList']
+for item in fileList:
+    print(item['requestname'])
+    outPutFile(item['requestid'])
 
 # 保存为CSV文件
 print(f"保存到xlsx文件")
