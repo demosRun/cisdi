@@ -64,11 +64,11 @@ def loadExcel(file):
             if (产品名称 != ''):
                 产品名称 += '/'
             产品名称 += row[7]
-            if isinstance(row[8], str) and row[8].isdigit():
-                总数量 += int(row[8])
-            if isinstance(row[8], int):
-                总数量 += int(row[8])
-    lestTemp = [项目名称, re.findall(r'\d+', 项目名称)[-1], 项目号, "", re.findall(r'\d+', 项目名称)[0], 业主名称, 产品名称, 总数量, None, None, None, lastRow[12], None,None,None,lastRow[15],None,None,lastRow[16],None,None, lastRow[17],None,None,lastRow[18],None,None,lastRow[19],None,None, lastRow[20]]
+            # if isinstance(row[8], str) and row[8].isdigit():
+            #     总数量 += int(row[8])
+            # if isinstance(row[8], int):
+            #     总数量 += int(row[8])
+    lestTemp = [项目名称, re.findall(r'\d+', 项目名称)[-1], 项目号, "", re.findall(r'\d+', 项目名称)[0], 业主名称, 产品名称, row[8], None, None, None, lastRow[12], None,None,None,lastRow[15],None,None,lastRow[16],None,None, lastRow[17],None,None,lastRow[18],None,None,lastRow[19],None,None, lastRow[20]]
     lestTemp = list(map(remove_zero_time, lestTemp))
     data.append(lestTemp)
     return data
