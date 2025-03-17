@@ -29,6 +29,7 @@ def getFileList():
     }
 
     response = requests.request("POST", url, headers=headers, data=payload)
+    print(response.text)
     return json.loads(response.text)
 
 print('读取现有文档数据')
